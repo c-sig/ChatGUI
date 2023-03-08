@@ -1,6 +1,8 @@
 # ChatGUI
 ## A Simple GUI to Interact with OpenAI Models
 
+[![Screenshot](https://cdn.discordapp.com/attachments/925060119249707020/1083030954970447902/image.png "Screenshot")](https://cdn.discordapp.com/attachments/925060119249707020/1083030954970447902/image.png "Screenshot")
+
 ### Disclaimer
 **Please refrain from using this program to break OpenAI Terms of Service!**
 
