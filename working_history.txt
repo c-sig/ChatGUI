@@ -1,0 +1,4 @@
+user: Hello!
+assistant: Hello there! It's great to see you. How are you doing today?
+user: I'm doing quite well!
+assistant: That's awesome to hear! Is there anything you'd like to chat about or any questions you have?

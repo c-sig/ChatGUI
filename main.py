@@ -34,7 +34,6 @@ with open(chat_history_text, "r") as file:
 
 def autosave():
     token_count = (num_tokens_from_string(current_token, "cl100k_base"))
-    print(token_count)
     if token_count >= 3072:
         try:
             with open(chat_history_text, 'r') as input_file:
