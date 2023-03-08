@@ -3,11 +3,11 @@
 
 ### Disclaimer
 **Please refrain from using this program to break OpenAI Terms of Service!**
-### Usage
-#### Requirements
-Python 3.9
 
-#### Usage
+### Requirements
+**Python 3.9**
+
+### Usage
 **0. Download the repository through git or by downloading the .zip file**
 > git clone https://github.com/c-sig/ChatGUI.git
 
@@ -21,13 +21,14 @@ Python 3.9
 > botname = Name
 
 **2.2 Adapt immersion prompt to your needs (optional)**
+> immersion_prompt = prompt preventing ChatGPT from acting out
 
 **3. Launch GUI by opening a terminal in the root folder again**
 > python main.py
 
 
 
-#### Guide
+## Guide
 **SEND** - Sends your message. Pressing [ENTER] on your keyboard also sends your message.
 
 **RESET** - Clears your chat history.
