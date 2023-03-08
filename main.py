@@ -215,6 +215,7 @@ root.option_add('*Font', ('Inter', 10))
 
 prompt_hint = "Enter your character prompt here."
 name_hint = "Enter your character's name here."
+input_hint = "Talk to your character here!"
 
 scrollbar = tk.Scrollbar(root)
 
@@ -233,15 +234,32 @@ chat_history.grid(row=2, column=1, padx=10, pady=10)
 prompt_window = tk.Text(root, height=20, width=40)
 prompt_window.grid(row=2, column=2, padx=10, pady=10)
 
+input_box = tk.Text(root, height=3, width=80)
+input_box.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+
 prompt_window_scrollbar = tk.Scrollbar(root, command=prompt_window.yview)
 prompt_window_scrollbar.grid(row=2, column=3, sticky='nsew')
 prompt_window['yscrollcommand'] = prompt_window_scrollbar.set
+
+input_box.insert('1.0', input_hint, 'hint')
+input_box.tag_configure('hint', foreground='grey')
 
 prompt_window.insert('1.0', prompt_hint, 'hint')
 prompt_window.tag_configure('hint', foreground='grey')
 
 name_window.insert('1.0', name_hint, 'hint')
 name_window.tag_configure('hint', foreground='grey')
+
+
+def show_input_hint(event):
+    if input_box.get('1.0', 'end-1c') == input_hint:
+        input_box.delete('1.0', 'end')
+        input_box.tag_configure('hint', foreground='black')
+
+def hide_input_hint(event):
+    if input_box.get('1.0', 'end-1c') == '':
+        input_box.insert('1.0', input_hint, 'hint')
+        input_box.tag_configure('hint', foreground='grey')
 
 def show_prompt_hint(event):
     if prompt_window.get('1.0', 'end-1c') == prompt_hint:
@@ -262,9 +280,6 @@ def hide_name_hint(event):
     if name_window.get('1.0', 'end-1c') == '':
         name_window.insert('1.0', name_hint, 'hint')
         name_window.tag_configure('hint', foreground='grey')
-
-input_box = tk.Text(root, height=3, width=80)
-input_box.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
 button_frame = tk.Frame(root)
 button_frame.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
@@ -292,5 +307,7 @@ prompt_window.bind('<FocusIn>', show_prompt_hint)
 prompt_window.bind('<FocusOut>', hide_prompt_hint)
 name_window.bind('<FocusIn>', show_name_hint)
 name_window.bind('<FocusOut>', hide_name_hint)
+input_box.bind('<FocusIn>', show_input_hint)
+input_box.bind('<FocusOut>', hide_input_hint)
 
 root.mainloop()
