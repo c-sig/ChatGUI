@@ -53,7 +53,7 @@ def autosave():
         except Exception as e:
             print(f"Error occurred while autosaving: {e}")
         else:
-            print("Not enough tokens to trigger autosave")
+            pass
 
 def save_to_file():
     # Get the contents of the chat history file
@@ -78,6 +78,7 @@ def write_message(role, content):
     autosave()
     try:
         with open(chat_history_text, "a") as f:
+            content = content.replace('\n', '')
             f.write(role + ": " + content + "\n")
     except IOError as e:
         print("Error writing message:", e)
@@ -189,7 +190,6 @@ def delete_last_two_lines():
 def load_current_history():
     autosave()
     enable_type()
-    botname = name_window.get('1.0', 'end-1c')
     with open(chat_history_text, 'r') as f:
         for line in f:
             if line.startswith('user:'):
