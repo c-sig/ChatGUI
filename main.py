@@ -2,9 +2,13 @@ import os
 import openai
 import datetime
 import tiktoken
+import requests
+import random
 import tkinter as tk
 from tkinter import filedialog
 import configparser
+
+from playsound import playsound
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -13,7 +17,10 @@ now = datetime.datetime.now()
 day = now.strftime("%A")
 time = now.strftime("%I:%M %p")
 
+API_KEY = config.get('settings', 'audio_key')
+voice_id = config.get('settings', 'voice_id')
 botname = config.get('settings', 'botname')
+site = "https://api.elevenlabs.io/v1/text-to-speech/" + voice_id
 immersion = config.get('settings', 'immersion_prompt')
 immersion = immersion + f"It's currently {time} on a {day}"
 openai.api_key = config.get('settings', 'api_key')
@@ -22,6 +29,25 @@ chat_history_text = "working_history.txt"
 if not os.path.exists(chat_history_text):
     with open(chat_history_text, 'w') as file:
         pass
+
+def generateaudio(reply_text: str):
+    headers = {
+        'accept': 'audio/mpeg',
+        'xi-api-key': API_KEY,
+        'Content-Type': 'application/json'
+    }
+
+    r = requests.post(site, json={"text": reply_text}, headers=headers)
+    if r.status_code == 400:
+        print("Invalid Voice ID")
+    else:
+        audiofilename = "audio-" + str(random.randint(1, 372855)) + ".mp3"
+        audiofilepath = os.path.join("audio", audiofilename)
+        if not os.path.exists("audio"):
+            os.makedirs("audio")
+        with open(audiofilepath, 'wb') as out:
+            out.write(r.content)
+        return audiofilepath
 
 def num_tokens_from_string(string: str, encoding_name: str) -> int:
     encoding = tiktoken.get_encoding(encoding_name)
@@ -146,6 +172,8 @@ def regenerate_response():
     chat_history.yview(tk.END)
     disable_type()
     load_current_history()
+    audiofilepath = generateaudio(reply)
+    playsound(audiofilepath)
 
 def send_message():
     autosave()
@@ -172,6 +200,8 @@ def send_message():
         print("Unexpected error:", e)
     disable_type()
     load_current_history()
+    audiofilepath = generateaudio(reply)
+    playsound(audiofilepath)
 
 def send_on_enter(event):
     autosave()
@@ -194,6 +224,7 @@ def delete_last_two_lines():
 def load_current_history():
     autosave()
     enable_type()
+    chat_history.delete('1.0', tk.END)
     with open(chat_history_text, 'r') as f:
         for line in f:
             if line.startswith('user:'):
