@@ -82,6 +82,7 @@ def write_message(role, content):
             f.write(role + ": " + content + "\n")
     except IOError as e:
         print("Error writing message:", e)
+    load_current_history()
 
 def read_message():
     autosave()
@@ -101,6 +102,7 @@ def read_message():
                     messages.append({"role": role, "content": content.rstrip()})
     except IOError as e:
         print("Error reading messages: ", e)
+    load_current_history()
     return messages
 
 def reset():
@@ -143,6 +145,7 @@ def regenerate_response():
     chat_history.insert(tk.END, botname + ": " + reply + "\n")
     chat_history.yview(tk.END)
     disable_type()
+    load_current_history()
 
 def send_message():
     autosave()
@@ -168,6 +171,7 @@ def send_message():
     except Exception as e:
         print("Unexpected error:", e)
     disable_type()
+    load_current_history()
 
 def send_on_enter(event):
     autosave()
@@ -279,6 +283,7 @@ def hide_name_hint(event):
     if name_window.get('1.0', 'end-1c') == '':
         name_window.insert('1.0', name_hint, 'hint')
         name_window.tag_configure('hint', foreground='grey')
+
 
 button_frame = tk.Frame(root)
 button_frame.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
